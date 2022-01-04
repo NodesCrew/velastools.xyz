@@ -1,0 +1,40 @@
+{%- include "_layout_header.html" -%}
+
+    <section class="jumbotron text-center">
+        Mainnet rewards for nodes from blockchain
+    </section>
+
+    <div class="col-sm-12">
+        <table class="table table-striped table-hover" data-toggle="table" data-search="true" data-custom-sort="table_sorter" data-sort-order="asc" data-sort-name="epoch_{{ epoches | max }}" data-show-columns="true">
+            <thead>
+                <tr>
+                    <th scope="col" data-field="favorite" data-sortable="true">F</th>
+                    <th scope="col" data-field="node_pk">Node PK</th>
+                    <th scope="col" data-field="vote_pk">Vote PK</th>
+                    {% for epoch in epoches %}
+                        <th scope="col" data-field="epoch_{{ epoch }}" data-sortable="true">{{ epoch }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+
+            {% if rewards %}
+                <tbody id="tbody">
+                {% for node in rewards.values() %}
+                    <tr id="{{ node.node_pk }}">
+                        <td>
+                            <i class="fav-icon bi bi-star" id="fav-{{ node.node_pk }}"></i>
+                        </td>
+                        <td>{{ node.node_pk }}</td>
+                        <td>{{ node.vote_pk }}</td>
+
+                        {%- for epoch in epoches -%}
+                            <td>{{ node.rewards[epoch] or "-" }}</td>
+                        {%- endfor -%}
+                    </tr>
+                {% endfor %}
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+{%- include "_layout_footer.html" -%}
